@@ -22,6 +22,7 @@
 #include "NameSpaceUtil.h"
 #include "TopicPublishInfo.h"
 #include "UtilAll.h"
+#include "CommonConstants.h"
 
 namespace rocketmq {
 // hard code first.
@@ -43,8 +44,8 @@ DefaultMQClient::DefaultMQClient() {
   m_clientFactory = NULL;
   m_serviceState = CREATE_JUST;
   m_pullThreadNum = std::thread::hardware_concurrency();
-  m_tcpConnectTimeout = 3000;        // 3s
-  m_tcpTransportTryLockTimeout = 3;  // 3s
+  m_tcpConnectTimeout = TCP_CONNECT_TIMEOUT_MILLISECOND;
+  m_tcpTransportTryLockTimeout = TCP_TRANSPORT_TRY_LOCK_TIMEOUT_SECOND;
   m_unitName = "";
   m_messageTrace = false;
 }
@@ -178,6 +179,10 @@ void DefaultMQClient::setLogLevel(elogLevel inputLevel) {
 
 elogLevel DefaultMQClient::getLogLevel() {
   return ALOG_ADAPTER->getLogLevel();
+}
+
+void DefaultMQClient::setLogPath(const std::string& logPath) {
+  ALOG_ADAPTER
 }
 
 void DefaultMQClient::setLogFileSizeAndNum(int fileNum, long perFileSize) {

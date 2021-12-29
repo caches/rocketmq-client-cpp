@@ -53,12 +53,13 @@ void ResponseFuture::releaseThreadCondition() {
 
 RemotingCommand* ResponseFuture::waitResponse(int timeoutMillis) {
   std::unique_lock<std::mutex> eventLock(m_defaultEventLock);
+  LOG_DEBUG("input timeoutMillis: %d, innerTimeout: %d", timeoutMillis, m_timeout);
   if (!m_haveResponse) {
     if (timeoutMillis <= 0) {
       timeoutMillis = m_timeout;
     }
     if (m_defaultEvent.wait_for(eventLock, std::chrono::milliseconds(timeoutMillis)) == std::cv_status::timeout) {
-      LOG_WARN("waitResponse of code:%d with opaque:%d timeout", m_requestCode, m_opaque);
+      LOG_WARN("waitResponse of code:%d with opaque:%d timeout[%d]", m_requestCode, m_opaque, timeoutMillis);
       m_haveResponse = true;
     }
   }

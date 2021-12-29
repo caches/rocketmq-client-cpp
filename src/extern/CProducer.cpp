@@ -34,6 +34,8 @@
 #include "TransactionSendResult.h"
 #include "UtilAll.h"
 
+#include "../log/Logging.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -230,6 +232,7 @@ CProducer* CreateProducer(const char* groupId) {
   defaultMQProducer->version[MAX_SDK_VERSION_LENGTH - 1] = 0;
   defaultMQProducer->innerTransactionProducer = NULL;
   defaultMQProducer->listenerInner = NULL;
+
   return (CProducer*)defaultMQProducer;
 }
 
@@ -374,7 +377,9 @@ int SendMessageSync(CProducer* producer, CMessage* msg, CSendResult* result) {
   try {
     DefaultProducer* defaultMQProducer = (DefaultProducer*)producer;
     MQMessage* message = (MQMessage*)msg;
+    LOG_DEBUG("send msg start: %s", message->toString().c_str());
     SendResult sendResult = defaultMQProducer->innerProducer->send(*message);
+    LOG_DEBUG("send end: %s", sendResult.toString().c_str());
     switch (sendResult.getSendStatus()) {
       case SEND_OK:
         result->sendStatus = E_SEND_OK;
@@ -397,6 +402,7 @@ int SendMessageSync(CProducer* producer, CMessage* msg, CSendResult* result) {
     result->msgId[MAX_MESSAGE_ID_LENGTH - 1] = 0;
   } catch (exception& e) {
     MQClientErrorContainer::setErr(string(e.what()));
+    LOG_ERROR("send error: %s", e.what());
     return PRODUCER_SEND_SYNC_FAILED;
   }
   return OK;

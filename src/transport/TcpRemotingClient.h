@@ -30,6 +30,7 @@
 #include "ResponseFuture.h"
 #include "SocketUtil.h"
 #include "TcpTransport.h"
+#include "CommonConstants.h"
 
 namespace rocketmq {
 //<!************************************************************************
@@ -47,10 +48,10 @@ class TcpRemotingClient {
   virtual void stopAllTcpTransportThread();
   virtual void updateNameServerAddressList(const string& addrs);
 
-  virtual bool invokeHeartBeat(const string& addr, RemotingCommand& request, int timeoutMillis = 3000);
+  virtual bool invokeHeartBeat(const string& addr, RemotingCommand& request, int timeoutMillis = DEFAULT_TIMEOUT_MILLISECOND);
 
   // delete outsite;
-  virtual RemotingCommand* invokeSync(const string& addr, RemotingCommand& request, int timeoutMillis = 3000);
+  virtual RemotingCommand* invokeSync(const string& addr, RemotingCommand& request, int timeoutMillis = DEFAULT_TIMEOUT_MILLISECOND);
 
   virtual bool invokeAsync(const string& addr,
                            RemotingCommand& request,

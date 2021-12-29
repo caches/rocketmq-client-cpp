@@ -32,8 +32,9 @@ declare fname_boost="boost*.tar.gz"
 declare fname_openssl_down="openssl-1.1.1d.tar.gz"
 declare fname_libevent_down="release-2.1.11-stable.zip"
 declare fname_jsoncpp_down="0.10.7.zip"
-declare fname_boost_down="1.58.0/boost_1_58_0.tar.gz"
-
+#declare fname_boost_down="1.58.0/boost_1_58_0.tar.gz"
+#declare fname_boost_down="1.75.0/boost_1_75_0.tar.gz"
+#https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
 PrintParams() {
   echo "=========================================one key build help============================================"
   echo "sh build.sh [no build libevent:noEvent] [no build json:noJson] [no build boost:noBoost] [ execution test:test]"
@@ -44,8 +45,10 @@ PrintParams() {
 
 if test "$(uname)" = "Linux"; then
   declare cpu_num=$(cat /proc/cpuinfo | grep "processor" | wc -l)
+  declare fname_boost_down="1.58.0/boost_1_58_0.tar.gz"
 elif test "$(uname)" = "Darwin" ; then
   declare cpu_num=$(sysctl -n machdep.cpu.thread_count)
+  declare fname_boost_down="1.75.0/boost_1_75_0.tar.gz"
 fi
 
 declare need_build_openssl=1
@@ -100,6 +103,7 @@ pasres_arguments $@
 
 PrintParams() {
   echo "###########################################################################"
+  echo "in $(uname) os, using boost: ${fname_boost_down}"
   if [ $need_build_openssl -eq 0 ]; then
     echo "no need build openssl lib"
   else
@@ -258,7 +262,7 @@ BuildLibevent() {
   if [ -e ${fname_libevent} ]; then
     echo "${fname_libevent} exists"
   else
-    wget https://github.com/libevent/libevent/archive/${fname_libevent_down} -O libevent-${fname_libevent_down}
+    wget https://ghproxy.com/https://github.com/libevent/libevent/archive/${fname_libevent_down} -O libevent-${fname_libevent_down}
   fi
   unzip -o ${fname_libevent} &> unziplibevent.txt
   if [ $? -ne 0 ]; then
@@ -307,7 +311,7 @@ BuildJsonCPP() {
   if [ -e ${fname_jsoncpp} ]; then
     echo "${fname_jsoncpp} exists"
   else
-    wget https://github.com/open-source-parsers/jsoncpp/archive/${fname_jsoncpp_down} -O jsoncpp-${fname_jsoncpp_down}
+    wget https://ghproxy.com/https://github.com/open-source-parsers/jsoncpp/archive/${fname_jsoncpp_down} -O jsoncpp-${fname_jsoncpp_down}
   fi
   unzip -o ${fname_jsoncpp} &> unzipjsoncpp.txt
   if [ $? -ne 0 ]; then
@@ -356,7 +360,7 @@ BuildBoost() {
   if [ -e ${fname_boost} ]; then
     echo "${fname_boost} exists"
   else
-    wget http://sourceforge.net/projects/boost/files/boost/${fname_boost_down}
+      wget http://sourceforge.net/projects/boost/files/boost/${fname_boost_down}
   fi
   tar -zxvf ${fname_boost} &> unzipboost.txt
   boost_dir=$(ls | grep ^boost | grep .*[^gz]$)
@@ -437,7 +441,7 @@ BuildGoogleTest() {
   if [ -e release-1.8.1.tar.gz ]; then
     echo "${fname_boost} exists"
   else
-    wget https://github.com/abseil/googletest/archive/release-1.8.1.tar.gz
+    wget https://ghproxy.com/https://github.com/abseil/googletest/archive/release-1.8.1.tar.gz
   fi
   if [ ! -d "googletest-release-1.8.1" ]; then
     tar -zxvf release-1.8.1.tar.gz &> googletest.txt
@@ -529,4 +533,3 @@ BuildJsonCPP
 BuildBoost
 BuildGoogleTest
 BuildRocketMQClient
-ExecutionTesting

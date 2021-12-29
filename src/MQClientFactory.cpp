@@ -23,6 +23,7 @@
 #include "Rebalance.h"
 #include "TopicPublishInfo.h"
 #include "TransactionMQProducerImpl.h"
+#include "CommonConstants.h"
 
 #define MAX_BUFF_SIZE 8192
 #define SAFE_BUFF_SIZE 7936  // 8192 - 256 = 7936
@@ -169,7 +170,7 @@ bool MQClientFactory::updateTopicRouteInfoFromNameServer(const string& topic,
 
   if (isDefault) {
     pTopicRouteData.reset(
-        m_pClientAPIImpl->getTopicRouteInfoFromNameServer(DEFAULT_TOPIC, 1000 * 5, session_credentials));
+        m_pClientAPIImpl->getTopicRouteInfoFromNameServer(DEFAULT_TOPIC, GET_TOPIC_ROUTE_INFO_TIMEOUT_MILLISCOND, session_credentials));
     if (pTopicRouteData != NULL) {
       vector<QueueData>& queueDatas = pTopicRouteData->getQueueDatas();
       vector<QueueData>::iterator it = queueDatas.begin();
@@ -181,7 +182,7 @@ bool MQClientFactory::updateTopicRouteInfoFromNameServer(const string& topic,
     }
     LOG_DEBUG("getTopicRouteInfoFromNameServer is null for topic :%s", topic.c_str());
   } else {
-    pTopicRouteData.reset(m_pClientAPIImpl->getTopicRouteInfoFromNameServer(topic, 1000 * 5, session_credentials));
+    pTopicRouteData.reset(m_pClientAPIImpl->getTopicRouteInfoFromNameServer(topic, GET_TOPIC_ROUTE_INFO_TIMEOUT_MILLISCOND, session_credentials));
   }
 
   if (pTopicRouteData != NULL) {

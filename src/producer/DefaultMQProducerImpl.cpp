@@ -439,10 +439,11 @@ SendResult DefaultMQProducerImpl::sendKernelImpl(MQMessage& msg,
                                                  int communicationMode,
                                                  SendCallback* sendCallback) {
   string brokerAddr = getFactory()->findBrokerAddressInPublish(mq.getBrokerName());
-
+  LOG_DEBUG("brokerAddr: %s", brokerAddr.c_str());
   if (brokerAddr.empty()) {
     getFactory()->tryToFindTopicPublishInfo(mq.getTopic(), getSessionCredentials());
     brokerAddr = getFactory()->findBrokerAddressInPublish(mq.getBrokerName());
+    LOG_DEBUG("brokerAddr is empty : %s", brokerAddr.c_str());
   }
 
   if (!brokerAddr.empty()) {
@@ -504,6 +505,7 @@ SendResult DefaultMQProducerImpl::sendKernelImpl(MQMessage& msg,
       }
       return sendResult;
     } catch (MQException& e) {
+      LOG_ERROR("produce send error:%s to %s", e.what(), mq.toString().c_str());
       throw e;
     }
   }
