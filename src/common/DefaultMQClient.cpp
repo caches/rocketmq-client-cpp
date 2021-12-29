@@ -181,10 +181,6 @@ elogLevel DefaultMQClient::getLogLevel() {
   return ALOG_ADAPTER->getLogLevel();
 }
 
-void DefaultMQClient::setLogPath(const std::string& logPath) {
-  ALOG_ADAPTER
-}
-
 void DefaultMQClient::setLogFileSizeAndNum(int fileNum, long perFileSize) {
   ALOG_ADAPTER->setLogFileNumAndSize(fileNum, perFileSize);
 }
