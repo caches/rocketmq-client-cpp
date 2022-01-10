@@ -216,7 +216,7 @@ BuildOpenSSL() {
   if [ -e ${fname_openssl} ]; then
     echo "${fname_openssl} exists"
   else
-    wget https://www.openssl.org/source/old/1.1.1/${fname_openssl_down} -O ${fname_openssl_down}
+    wget  https://www.openssl.org/source/old/1.1.1/${fname_openssl_down} -O ${fname_openssl_down} --no-check-certificate
   fi
   tar -zxvf ${fname_openssl} &> unzipopenssl.txt
   if [ $? -ne 0 ]; then
@@ -262,7 +262,7 @@ BuildLibevent() {
   if [ -e ${fname_libevent} ]; then
     echo "${fname_libevent} exists"
   else
-    wget https://ghproxy.com/https://github.com/libevent/libevent/archive/${fname_libevent_down} -O libevent-${fname_libevent_down}
+    wget  https://ghproxy.com/https://github.com/libevent/libevent/archive/${fname_libevent_down} -O libevent-${fname_libevent_down} --no-check-certificate
   fi
   unzip -o ${fname_libevent} &> unziplibevent.txt
   if [ $? -ne 0 ]; then
@@ -311,7 +311,7 @@ BuildJsonCPP() {
   if [ -e ${fname_jsoncpp} ]; then
     echo "${fname_jsoncpp} exists"
   else
-    wget https://ghproxy.com/https://github.com/open-source-parsers/jsoncpp/archive/${fname_jsoncpp_down} -O jsoncpp-${fname_jsoncpp_down}
+    wget  https://ghproxy.com/https://github.com/open-source-parsers/jsoncpp/archive/${fname_jsoncpp_down} -O jsoncpp-${fname_jsoncpp_down} --no-check-certificate
   fi
   unzip -o ${fname_jsoncpp} &> unzipjsoncpp.txt
   if [ $? -ne 0 ]; then
@@ -360,7 +360,7 @@ BuildBoost() {
   if [ -e ${fname_boost} ]; then
     echo "${fname_boost} exists"
   else
-      wget http://sourceforge.net/projects/boost/files/boost/${fname_boost_down}
+      wget  http://sourceforge.net/projects/boost/files/boost/${fname_boost_down} --no-check-certificate
   fi
   tar -zxvf ${fname_boost} &> unzipboost.txt
   boost_dir=$(ls | grep ^boost | grep .*[^gz]$)
@@ -441,7 +441,7 @@ BuildGoogleTest() {
   if [ -e release-1.8.1.tar.gz ]; then
     echo "${fname_boost} exists"
   else
-    wget https://ghproxy.com/https://github.com/abseil/googletest/archive/release-1.8.1.tar.gz
+    wget  https://ghproxy.com/https://github.com/abseil/googletest/archive/release-1.8.1.tar.gz --no-check-certificate
   fi
   if [ ! -d "googletest-release-1.8.1" ]; then
     tar -zxvf release-1.8.1.tar.gz &> googletest.txt
